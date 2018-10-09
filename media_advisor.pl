@@ -3,25 +3,25 @@
 
 % rule 1
 stimulus_situation(verbal) :-	environment(papers);
-								environment(manuals);
-								environment(documents);
-								environment(textbooks).
+				environment(manuals);
+				environment(documents);
+				environment(textbooks).
 
 % rule 2
 stimulus_situation(visual) :- 	environment(pictures);
-								environment(illustrations);
-								environment(photographs);
-								environment(diagrams).
+				environment(illustrations);
+				environment(photographs);
+				environment(diagrams).
 								
 % rule 3 
 stimulus_situation(physical_object) :-	environment(machines);
-										environment(buildings);
-										environment(tools).
+					environment(buildings);
+					environment(tools).
 										
 % rule 4
 stimulus_situation(symbolic) :-	environment(numbers);
-								environment(formulas);
-								environment(computer_programs).
+				environment(formulas);
+				environment(computer_programs).
 							  
 % rule 5
 stimulus_response(oral) :- job(lecturing);
@@ -30,48 +30,58 @@ stimulus_response(oral) :- job(lecturing);
 						   
 % rule 6
 stimulus_response(hands_on) :-	job(building);
-								job(repairing);
-								job(troubleshooting).
+				job(repairing);
+				job(troubleshooting).
 								
 % rule 7
 stimulus_response(documented) :-	job(writing);
-									job(typing);
-									job(drawing).
+					job(typing);
+					job(drawing).
 									
 % rule 8
 stimulus_response(analytical) :-	job(evaluating);
-									job(reasoning);
-									job(investigating).
+					job(reasoning);
+					job(investigating).
                               
 % rule 9
-medium(workshop) :- stimulus_situation(physical_object),
-                    stimulus_response(hands_on),
-                    feedback(yes).
+medium(workshop) :-	stimulus_situation(physical_object),
+                    	stimulus_response(hands_on),
+                    	feedback(yes).
 					
 % rule 10
 medium(lecture_tutorial) :-	stimulus_response(symbolic),
-							stimulus_response(analytical),
-							feedback(yes).
+				stimulus_response(analytical),
+				feedback(yes).
 							
 % rule 11
 medium(videocassette) :-	stimulus_situation(visual),
-							stimulus_response(documented),
-							feedback(no).
+				stimulus_response(documented),
+				feedback(no).
 							
 % rule 12
 medium(lecture_tutorial) :-	stimulus_situation(visual),
-							stimulus_response(oral),
-							feedback(yes).
+				stimulus_response(oral),
+				feedback(yes).
 							
 % rule 13
 medium(lecture_tutorial) :-	stimulus_situation(verbal),
-							stimulus_response(analytical),
-							feedback(yes).
+				stimulus_response(analytical),
+				feedback(yes).
 							
 % rule 14
 medium(role_play_exercises) :-	stimulus_situation(verbal),
-								stimulus_response(oral),
-								feedback(yes).
+				stimulus_response(oral),
+				feedback(yes).
+
+% own rule 1
+stimulus_response(analytical) :-	job(judging),
+					job(calculating),
+					job(deciding).
+
+% own rule 2
+stimulus_response(documented) :-	job(categorizing),
+					job(painting),
+					job(scripting).
                     
 
 % 3 inputs required: 1 environment 2 job, 3 feedback yes/no                 
@@ -81,8 +91,8 @@ go :-
     getJob,
     feedback,
     (
-		stimulus_situation(SS), nl, write('Stimulus situation is '), write(SS), nl, medium(M);
-		writeln('Could not advise on an appropriate medium')
+	stimulus_situation(SS), nl, write('Stimulus situation is '), write(SS), nl, medium(M);
+	writeln('Could not advise on an appropriate medium')
 	), 
     cleanInputs.
       
