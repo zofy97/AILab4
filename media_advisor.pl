@@ -1,6 +1,3 @@
-% some example rules to get you started
-
-
 % rule 1
 stimulus_situation(verbal) :-	environment(papers);
 				environment(manuals);
