@@ -10,42 +10,47 @@ investment(combination) :-	savings_account(adequate),
 							income(inadequate).
 		
 % rule 4		
-% savings_account(adequate) :-	forall(amount_saved(X),
-%								+(dependents(Y),
-%                                greater(X, minsavings(Y))).
+savings_account(adequate) :-	amount_saved(X),
+								dependents(Y),
+                                minsavings(Y, MS),
+								X @> MS.
 								
 % rule 5
-% savings_account(inadequate) :-	forall(amount_saved(X)),
-								+(dependents(Y),
-                                X > minsavings(Y)).
+savings_account(inadequate) :-	amount_saved(X),
+								dependents(Y),
+								minsavings(Y, MS)
+                                X < MS.
 			 				
 % rule 6
-% income(adequate) :-	forall(earnings(X, steady)),
-					+(dependents(Y),
-                    greater(X, minincome(Y))).
+% income(adequate) :-	earnings(X, steady),
+						dependents(Y),
+						minincome(Y, MI),
+						X @> MI.
 					
 % rule 7
-% income(inadequate) :-	earnings(X, steady),
+income(inadequate) :-	earnings(X, steady),
 						dependents(Y),
-                        X > minincome(Y).
+						minincome(Y, MI),
+                        X @< minincome(Y).
 						
 % rule 8
 income(inadequate) :-	earnings(X, unsteady).
 
 % rule 9
-amount_saved(X).
+minsavings(D, MS) :-	MS is 5000 * D.
 
 % rule 10
-earnings(25000, steady).
+minincome(D, MI) :-	MI is 15000 + (4000 * D).
 
 % rule 11
-dependents(Y).
+amount_saved(22000).
 
 % rule 12
-minincome(X) = 15000 + (4000 * X).
+earnings(25000, steady).
 
 % rule 13
-minsavings(X) = 5000 * X.
+dependents(3).
+
 
 % 3 inputs required: 1 amount_saved 2 earnings, 3 dependents                
 
@@ -53,7 +58,7 @@ go :-
     getAmount_saved,
     getEarnings,
     dependents,
-	income(SS), nl, write('Income is '), write(SS), nl,
+	investment(I), nl, write('Advised investment is '), write(I), nl,
     cleanInputs.
       
 getAmount_saved :-
@@ -64,7 +69,7 @@ getAmount_saved :-
 getEarnings :-
 	write('Input the earnings '),
 	read(E),
-	assert(earnings(E)).
+	assert(earnings(E, steady)).
 
 dependents :-       
     write('How many dependents? '),
